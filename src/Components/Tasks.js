@@ -1,5 +1,6 @@
 import { Component } from "react";
 import Task from "./Task";
+import PropTypes from "prop-types";
 class Tasks extends Component {
   render() {
     return (
@@ -11,5 +12,9 @@ class Tasks extends Component {
     );
   }
 }
+// https://reactjs.org/docs/typechecking-with-proptypes.html
+Tasks.propTypes = {
+  tasksList: PropTypes.array.isRequired,
+};
 
 export default Tasks;
