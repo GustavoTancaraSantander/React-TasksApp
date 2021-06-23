@@ -1,89 +1,62 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { Component } from "react";
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-      </header>
-      <div id="HiComponent-id">
-        HiComponent :
-        <br />
-        <HiComponent myProps="P1" subtitle="loremsub1"></HiComponent>
-        <HiComponent myProps="P2"></HiComponent>
-        <HiComponent myProps="P3!"></HiComponent>
-      </div>
-      <ComponentApp></ComponentApp>
-      <StateComponent myProps="myProps"></StateComponent>
-    </div>
-  );
-}
-
-function HiComponent(props) {
-  return (
-    <div>
-      Hi, welcome App React {props.myProps} <b>{props.subtitle}</b>
-    </div>
-  );
-}
-const ComponentApp = () => <div>this ComponentApp Arrow ES6</div>;
-
-class StateComponent extends Component {
+import tasks from "./task.json";
+import Tasks from "./Components/Tasks";
+import TaskForm from "./Components/TaskForm";
+class App extends Component {
   state = {
-    show: false,
+    tasksList: tasks,
   };
-  toggleShow = () => {
-    this.setState({ show: false });
+  addTask = (title, description) => {
+    const newTask = {
+      id: this.state.tasksList.length + 1,
+      title,
+      description,
+      done: false,
+    };
+    this.setState({
+      tasksList: [...this.state.tasksList, newTask],
+    });
   };
-  render() {
-    if (this.state.show) {
-      return (
-        <div className="App-header">
-          <h3> StateComponent - Class</h3>
-          <p>{this.props.myProps}</p>
-          <button onClick={this.toggleShow}>Hide components</button>
-        </div>
-      );
-    } else {
-      return (
-        <div className="App-header">
-          There not elememts here!
-          {/* <button onClick={() => (this.state.show = !this.state.show)}> */}
-          <button onClick={() => this.setState({ show: true })}>
-            Show components
-          </button>
-        </div>
-      );
-    }
-  }
-}
+  updateTask = (task) => {
+    const updatedList = this.state.tasksList.map((e) => {
+      if (e.id === task.id) {
+        task.done = !task.done;
+      }
+      return e;
+    });
 
-/* class StateShowBtn extends Component {
+    this.setState({
+      tasksList: updatedList,
+    });
+  };
+  deleteTask = (id) => {
+    console.log(id);
+    const newList = this.state.tasksList.filter((x) => x.id !== id);
+    this.setState({
+      tasksList: newList,
+    });
+  };
   render() {
     return (
-      <div>
-        <button onClick={() => this.props.show}> Action </button>
+      <div className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <h1>Tasks List</h1>
+        {/* {this.state.tasksList.map((e) => (
+          <li key={e.id}>
+            {e.title} - {e.description} - {e.done}
+          </li>
+        ))} */}
+        <TaskForm addTask={this.addTask}></TaskForm>
+        <Tasks
+          tasksList={this.state.tasksList}
+          deleteTask={this.deleteTask}
+          updateTask={this.updateTask}
+        ></Tasks>
       </div>
     );
   }
-} */
-
-/* import {Component} from 'react'
-
-class AppReact extends Component {
-  render() {
-    return (
-      <div>
-        <ComponentApp></ComponentApp>
-      </div>
-    );
-  }
 }
-
-export default AppReact; */
 
 export default App;
