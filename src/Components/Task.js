@@ -6,7 +6,7 @@ class Task extends Component {
   styleComplet() {
     return {
       fontSize: "20",
-      color: this.props.item.done ? "gray" : "black",
+      color: this.props.item.done ? "gray" : "#61dafb",
       textDecoration: this.props.item.done ? "line-through" : "none",
     };
   }
@@ -15,8 +15,16 @@ class Task extends Component {
     return (
       <li style={this.styleComplet()}>
         {item.title} - {item.description} - {item.done}
-        <input type="checkbox" />
-        <button style={{ background: "#ad3232", cursor: "pointer" }}>X</button>
+        <input
+          type="checkbox"
+          onChange={this.props.updateTask.bind(this, item)}
+        />
+        <button
+          style={{ background: "#ad3232", cursor: "pointer" }}
+          onClick={this.props.deleteTask.bind(this, item.id)}
+        >
+          X
+        </button>
       </li>
     );
   }
